@@ -1,0 +1,25 @@
+{
+  "name": "errh",
+  "version": "0.0.1",
+  "description": "Simple error messages collector",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vne/errh"
+  },
+  "author": "Vladimir Neverov <sanguini@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vne/errh/issues"
+  },
+  "dependencies": {
+    "stack-trace": "0.0.9",
+    "pyfmt": "0.0.6"
+  },
+  "devDependencies": {
+    "mocha": "~1.21.4"
+  }
+}
