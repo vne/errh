@@ -1,6 +1,6 @@
 {
   "name": "errh",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Simple error messages collector",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,10 @@
     "type": "git",
     "url": "https://github.com/vne/errh"
   },
-  "author": "Vladimir Neverov <sanguini@gmail.com>",
+  "author": {
+    "name": "Vladimir Neverov",
+    "email": "sanguini@gmail.com"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/vne/errh/issues"
@@ -21,5 +24,12 @@
   },
   "devDependencies": {
     "mocha": "~1.21.4"
-  }
+  },
+  "readme": "errh - simple error messages collector\n======================================\n\nWritten by Vladimir Neverov <sanguini@gmail.com> in 2014.\n\nUser provides two parameters: id of something that caused an error to occure and an error message.\nId may be absent, so the message can be the only parameter.\n\nErrorHandler additionally stores level of importance, timestamp, stack trace and\narbitrary application and module names that are provided are arguments to the constructor.\n\nConstructor accepts three arguments:\n\n - task - a general name of the application where errors should be collected\n - id   - name of the module\n - settings - error handler settings, reserved for the future\n\nTwo first arguments both are arbitrary strings and are used only for error identification by humans.\n\nThese errors can later be handled in an arbitrary way, e.g. printed to console, stored\nin a database, emailed, etc.\n\nError register interface:\n\n - .info(message)\n - .info(id, message)  - register a message at 'info' level\n - .warn(message)\n - .warn(id, message)  - register a message at 'warning' level\n - .fatal(message)\n - .fatal(id, message) - register a message at 'fatal' level\n\nAll the methods above does not return anything by convention, so you can do as follows to return undefined:\n\n\treturn errh.fatal(id, \"Cant' bear it anymore\")\n\nOther methods:\n\n - .list()             - return errors as array\n - .merge(list)        - merge with array of errors or another ErrorHandler instance, returns current ErrorHandler instance\n - .stat()             - return object with minimal statistics on errors\n\n.toString method is redefined so that it returns a string representation of errors, one error per line, so\nyou can feed ErrorHandler instance to console.log, for example. .inspect returns .toString().\n\nTODO: add adapters for printing, storing, emailing, etc.\n\n\n",
+  "readmeFilename": "README.md",
+  "gitHead": "c25c26dbfd1e8a4be91b782dbc0191df6264b70d",
+  "homepage": "https://github.com/vne/errh",
+  "_id": "errh@0.0.1",
+  "_shasum": "a9f951873ff141b871014f899ff5a2ddda9cad64",
+  "_from": "errh@"
 }

@@ -108,6 +108,25 @@ ErrorHandler.prototype.merge = function(list) {
 	return this;
 }
 
+ErrorHandler.prototype.mangle = function(name, value) {
+	if (['ns', 'task', 'level', 'ts', 'stack', 'error', 'id'].indexOf(name) < 0) {
+		throw new Error("ErrorHandler.mangle: couldn't set an unknown property");
+	}
+	this.errors.map(function(x) {
+		x[name] = value;
+	});
+	return this;
+}
+
+ErrorHandler.prototype.set = function(name, value, overwrite) {
+	if (['ns', 'task'].indexOf(name) < 0) {
+		throw new Error("ErrorHandler.set: couldn't set an unknown property");
+	}
+	this[name] = value;
+	if (overwrite) { this.mangle(name, value); }
+	return this;
+}
+
 /* private methods */
 
 ErrorHandler.level = {
@@ -147,7 +166,7 @@ ErrorHandler.prototype.toString = function(level) {
 			ns: this.errors[i].ns,
 			error: this.errors[i].error,
 			id: this.errors[i].id || '',
-			level: this.getLevelName(this.errors[i].level)
+			level: this.getLevelName(this.errors[i])
 		});
 	}
 	return s;
