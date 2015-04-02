@@ -173,18 +173,45 @@ ErrorHandler.prototype.register = function(id, level, msg, stack) {
 }
 
 ErrorHandler.prototype.toString = function(level) {
-	var fmt = "  %(task)s.%(ns)7s: %(level)5s  %(id)10s  %(error)s\n",
-		s = '';
-	for (var i = 0; i < this.errors.length; i++) {
-		if (level && this.errors[i].level > level) { continue; }
-		s += fmt.pyfmt({
-			task: this.errors[i].task,
-			ns: this.errors[i].ns,
-			error: this.errors[i].error,
-			id: this.errors[i].id || '',
-			level: this.getLevelName(this.errors[i])
+	var self = this,
+		fmt = "  %(task)s:%(ns)s %(level)7s  %(id)10s  %(error)s\n",
+		s = '',
+		grp = [];
+	this.errors
+		.sort(function(a, b) {
+			// console.log('cmp', a, b);
+			// if (a.id < b.id) { return -1; }
+			// else if (a.id > b.id) { return 1; }
+
+			if (a.error < b.error) { return -1; }
+			else if (a.error > b.error) { return 1; }
 		});
-	}
+	// console.log(JSON.stringify(grp));
+	var pid;
+	this.errors.map(function(y) {
+		if (level && y.level > level) { return; }
+		s += fmt.pyfmt({
+			task: y.task,
+			ns: y.ns,
+			error: y.error,
+			id: y.id || '',
+			level: self.getLevelName(y)
+		});
+		// if (pid && pid !== y.id) {
+			// s += "\n";
+		// }
+		pid = y.id;
+	});
+	// for (var i = 0; i < this.errors.length; i++) {
+	// 	if (level && this.errors[i].level > level) { continue; }
+	// 	s += fmt.pyfmt({
+	// 		task: this.errors[i].task,
+	// 		ns: this.errors[i].ns,
+	// 		error: this.errors[i].error,
+	// 		id: this.errors[i].id || '',
+	// 		level: this.getLevelName(this.errors[i])
+	// 	});
+	// }
 	return s;
 }
 
