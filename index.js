@@ -57,6 +57,22 @@ function ErrorHandler(task, id, settings) {
 
 /* public interface */
 
+ErrorHandler.prototype.serialize = function() {
+	return {
+		error: this.errors,
+		task: this.task,
+		id: this.id,
+		settings: this.settings
+	};
+}
+
+ErrorHandler.prototype.unserialize = function(s) {
+	this.errors = s.error;
+	this.task = s.task;
+	this.id = s.id;
+	this.settings = s.settings;
+}
+
 ErrorHandler.prototype.info = function(id, msg) {
 	return this.register(id, ErrorHandler.level.info, msg, strace.get());
 }
