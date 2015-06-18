@@ -124,6 +124,14 @@ ErrorHandler.prototype.merge = function(list) {
 	return this;
 }
 
+ErrorHandler.prototype.map = function(fn) {
+	this.errors = this.errors.map(fn);
+}
+
+ErrorHandler.prototype.forEach = function(fn) {
+	this.errors.forEach(fn);
+}
+
 ErrorHandler.prototype.mangle = function(name, value) {
 	if (['ns', 'task', 'level', 'ts', 'stack', 'error', 'id'].indexOf(name) < 0) {
 		throw new Error("ErrorHandler.mangle: couldn't set an unknown property");
@@ -174,7 +182,7 @@ ErrorHandler.prototype.register = function(id, level, msg, stack) {
 
 ErrorHandler.prototype.toString = function(level) {
 	var self = this,
-		fmt = "  %(task)s:%(ns)s %(level)7s  %(id)10s  %(error)s\n",
+		fmt = "  %(task)s:%(ns)s %(level)7s  %(dept)18s  %(group)25s %(id)10s %(branch)25s %(address)45s | %(error)s\n",
 		s = '',
 		grp = [];
 	this.errors
@@ -182,9 +190,10 @@ ErrorHandler.prototype.toString = function(level) {
 			// console.log('cmp', a, b);
 			// if (a.id < b.id) { return -1; }
 			// else if (a.id > b.id) { return 1; }
-
-			if (a.error < b.error) { return -1; }
-			else if (a.error > b.error) { return 1; }
+			     if (a.dept_name     < b.dept_name    ) { return -1; } else if (a.dept_name     > b.dept_name    ) { return 1; }
+			else if (a.group_name    < b.group_name   ) { return -1; } else if (a.group_name    > b.group_name   ) { return 1; }
+			else if (a.branch_name   < b.branch_name  ) { return -1; } else if (a.branch_name   > b.branch_name  ) { return 1; }
+			else if (a.error         < b.error        ) { return -1; } else if (a.error         > b.error        ) { return 1; }
 		});
 	// console.log(JSON.stringify(grp));
 	var pid;
@@ -195,6 +204,11 @@ ErrorHandler.prototype.toString = function(level) {
 			ns: y.ns,
 			error: y.error,
 			id: y.id || '',
+			dept: y.dept_name || '',
+			group: y.group_name || '',
+			branch: y.branch_name || '',
+			address: y.address || '',
+			agent: y.agent_name || '',
 			level: self.getLevelName(y)
 		});
 		// if (pid && pid !== y.id) {

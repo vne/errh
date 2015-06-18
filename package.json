@@ -1,6 +1,6 @@
 {
   "name": "errh",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Simple error messages collector",
   "main": "index.js",
   "scripts": {
