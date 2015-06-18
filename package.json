@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "stack-trace": "0.0.9",
-    "pyfmt": "0.0.6"
+    "pyfmt": "latest"
   },
   "devDependencies": {
     "mocha": "~1.21.4"
